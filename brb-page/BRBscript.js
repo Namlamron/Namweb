@@ -69,17 +69,5 @@ new p5(function (sketch) {
     // Set text properties and draw the "BRB" text with the current color
     sketch.fill(currentColor); // Set text color to the current color
     sketch.text(textString, position.x, position.y);
-
-    // Draw the debugging collision box
-    var textWidth = sketch.textWidth(textString);
-    var textHeight = sketch.textAscent() + sketch.textDescent();
-    sketch.noFill();
-    sketch.stroke(255, 0, 0); // Red color for debugging rectangle
-    sketch.rect(
-      position.x - textWidth / 2,
-      position.y - textHeight / 2,
-      textWidth,
-      textHeight
-    );
   };
 });
