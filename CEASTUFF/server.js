@@ -6,14 +6,14 @@ const path = require('path');
 
 // Initialize Express app
 const app = express();
-const port = 3000; // Choose a port number
+const port = 21213; // Choose a port number
 
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Define routes
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'CEASTUFF/CEA/CEAindex.html'));
 });
 
 // TikTok Username
