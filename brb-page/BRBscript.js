@@ -6,16 +6,16 @@ new p5(function (sketch) {
   var currentColor = [255, 255, 255]; // Default white color
   var textString = "BRB"; // Text to display
 
-  /*Generate a random color.*/
+  // Generate a random color
   function getRandomColor() {
     return [sketch.random(255), sketch.random(255), sketch.random(255)];
   }
 
-  /* Checks boundary collision.*/
+  // Check for boundary collision
   function checkBoundaryCollision() {
     var hasCollision = false;
     var textWidth = sketch.textWidth(textString);
-    var textHeight = sketch.textAscent() + sketch.textDescent(); // More accurate height of the text
+    var textHeight = sketch.textAscent() + sketch.textDescent();
 
     // Left or right collision
     if (position.x - textWidth / 2 < 0 || position.x + textWidth / 2 > sketch.width) {
@@ -32,32 +32,37 @@ new p5(function (sketch) {
     return hasCollision;
   }
 
-  /*Setup.*/
+  // Setup
   sketch.setup = function () {
     sketch.createCanvas(window.innerWidth, window.innerHeight);
     sketch.textAlign(sketch.CENTER, sketch.CENTER);
-    sketch.textSize(textSize); // Set larger text size
+    sketch.textSize(textSize);
 
     // Initialize position to the center of the canvas
     position = sketch.createVector(sketch.width / 2, sketch.height / 2);
   };
 
-  /*Draw.*/
+  // Draw loop
   sketch.draw = function () {
-    sketch.clear(); // Clears the background, keeping it transparent
+    sketch.clear();
 
     // Check for collisions
     var hasCollision = checkBoundaryCollision();
     if (hasCollision) {
-      // Change direction when a collision occurs and update the color
+      // Change direction and color on collision
       currentColor = getRandomColor();
     }
 
-    // Update the position of the text
+    // Update position
     position.add(velocity);
 
-    // Set text properties and draw the "BRB" text with the current color
-    sketch.fill(currentColor); // Set text color to the current color
+    // Draw text with current color
+    sketch.fill(currentColor);
     sketch.text(textString, position.x, position.y);
+  };
+
+  // Resize canvas when window size changes
+  sketch.windowResized = function () {
+    sketch.resizeCanvas(window.innerWidth, window.innerHeight);
   };
 });
