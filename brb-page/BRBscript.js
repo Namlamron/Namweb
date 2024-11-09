@@ -5,6 +5,7 @@ new p5(function (sketch) {
   var textSize = 100; // Increase text size
   var currentColor = [255, 255, 255]; // Default white color
   var textString = "BRB"; // Text to display
+  var debugMode = false; // Set this to true to enable debugging mode
 
   // Generate a random color
   function getRandomColor() {
@@ -59,6 +60,21 @@ new p5(function (sketch) {
     // Draw text with current color
     sketch.fill(currentColor);
     sketch.text(textString, position.x, position.y);
+
+    // If debug mode is on, draw the collision box
+    if (debugMode) {
+      var textWidth = sketch.textWidth(textString);
+      var textHeight = sketch.textAscent() + sketch.textDescent();
+
+      sketch.noFill();
+      sketch.stroke(255, 0, 0); // Red color for debugging rectangle
+      sketch.rect(
+        position.x - textWidth / 2,
+        position.y - textHeight / 2,
+        textWidth,
+        textHeight
+      );
+    }
   };
 
   // Resize canvas when window size changes
