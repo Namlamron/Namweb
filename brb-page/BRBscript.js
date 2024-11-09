@@ -6,18 +6,12 @@ new p5(function (sketch) {
   var currentColor = [255, 255, 255]; // Default white color
   var textString = "BRB"; // Text to display
 
-  /**
-   * Generate a random color.
-   */
+  /*Generate a random color.*/
   function getRandomColor() {
     return [sketch.random(255), sketch.random(255), sketch.random(255)];
   }
 
-  /**
-   * Checks boundary collision.
-   *
-   * @return {boolean}
-   */
+  /* Checks boundary collision.*/
   function checkBoundaryCollision() {
     var hasCollision = false;
     var textWidth = sketch.textWidth(textString);
@@ -38,9 +32,7 @@ new p5(function (sketch) {
     return hasCollision;
   }
 
-  /**
-   * Setup.
-   */
+  /*Setup.*/
   sketch.setup = function () {
     sketch.createCanvas(window.innerWidth, window.innerHeight);
     sketch.textAlign(sketch.CENTER, sketch.CENTER);
@@ -50,9 +42,7 @@ new p5(function (sketch) {
     position = sketch.createVector(sketch.width / 2, sketch.height / 2);
   };
 
-  /**
-   * Draw.
-   */
+  /*Draw.*/
   sketch.draw = function () {
     sketch.clear(); // Clears the background, keeping it transparent
 
