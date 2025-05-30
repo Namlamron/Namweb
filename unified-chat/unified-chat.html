@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Unified chat for Twitch, YouTube, and TikTok">
+        <title>Unified Chat | My Stream</title>
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="unified-chat.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="../index.html#schedule">Schedule</a>
+                <a href="../brb-page/BRBindex.html">BRB Page</a>
+                <a href="unified-chat.html" class="active">Unified Chat</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="chat-container">
+                <div class="chat-header">
+                    <h1>Unified Chat</h1>
+                    <div class="platform-toggles">
+                        <button class="platform-toggle active" data-platform="twitch">
+                            <i class="fab fa-twitch"></i> Twitch
+                        </button>
+                        <button class="platform-toggle active" data-platform="youtube">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </button>
+                        <button class="platform-toggle active" data-platform="tiktok">
+                            <i class="fab fa-tiktok"></i> TikTok
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type a message...">
+                    <button id="sendMessage">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2024 My Stream. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </footer>
+
+        <script src="unified-chat.js"></script>
+    </body>
+</html> 
