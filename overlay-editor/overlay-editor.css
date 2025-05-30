@@ -1,0 +1,160 @@
+.editor-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    height: calc(100vh - 60px);
+}
+
+.editor-sidebar {
+    width: 300px;
+    background-color: #18181b;
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.editor-sidebar h2 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.editor-sidebar h3 {
+    color: #9147ff;
+    margin-bottom: 0.5rem;
+}
+
+.element-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.editor-btn {
+    background-color: #1f1f23;
+    color: #efeff1;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+
+.editor-btn:hover {
+    background-color: #2d2d2d;
+}
+
+.editor-btn.primary {
+    background-color: #9147ff;
+}
+
+.editor-btn.primary:hover {
+    background-color: #772ce8;
+}
+
+.element-properties {
+    flex: 1;
+    background-color: #1f1f23;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.no-selection {
+    color: #efeff1;
+    text-align: center;
+    padding: 1rem;
+}
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    background-color: #18181b;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-canvas {
+    width: 1920px;
+    height: 1080px;
+    background-color: #0e0e10;
+    position: relative;
+    transform-origin: top left;
+    transform: scale(0.5);
+}
+
+.canvas-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.canvas-info {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+/* Element styles */
+.overlay-element {
+    position: absolute;
+    cursor: move;
+    user-select: none;
+}
+
+.overlay-element.selected {
+    outline: 2px solid #9147ff;
+}
+
+.overlay-element .resize-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #9147ff;
+    border-radius: 50%;
+}
+
+.overlay-element .resize-handle.nw { top: -5px; left: -5px; cursor: nw-resize; }
+.overlay-element .resize-handle.ne { top: -5px; right: -5px; cursor: ne-resize; }
+.overlay-element .resize-handle.sw { bottom: -5px; left: -5px; cursor: sw-resize; }
+.overlay-element .resize-handle.se { bottom: -5px; right: -5px; cursor: se-resize; }
+
+/* Property inputs */
+.property-group {
+    margin-bottom: 1rem;
+}
+
+.property-group label {
+    display: block;
+    color: #efeff1;
+    margin-bottom: 0.25rem;
+}
+
+.property-group input,
+.property-group select {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #2d2d2d;
+    border: 1px solid #3d3d3d;
+    border-radius: 4px;
+    color: #efeff1;
+}
+
+.property-group input:focus,
+.property-group select:focus {
+    outline: none;
+    border-color: #9147ff;
+} 

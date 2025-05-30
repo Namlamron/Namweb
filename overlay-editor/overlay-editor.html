@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Overlay Editor</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="overlay-editor.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="overlay-editor.html" class="active">Overlay Editor</a>
+            <a href="../brb-page/BRBindex.html">BRB Page</a>
+        </nav>
+    </header>
+
+    <main class="editor-container">
+        <div class="editor-sidebar">
+            <h2>Overlay Editor</h2>
+            
+            <div class="element-controls">
+                <h3>Add Element</h3>
+                <button id="addText" class="editor-btn">
+                    <i class="fas fa-font"></i> Add Text
+                </button>
+                <button id="addImage" class="editor-btn">
+                    <i class="fas fa-image"></i> Add Image
+                </button>
+                <button id="addLink" class="editor-btn">
+                    <i class="fas fa-link"></i> Add Link
+                </button>
+            </div>
+
+            <div class="element-properties">
+                <h3>Properties</h3>
+                <div id="propertiesPanel">
+                    <p class="no-selection">Select an element to edit its properties</p>
+                </div>
+            </div>
+
+            <div class="editor-actions">
+                <button id="saveOverlay" class="editor-btn primary">
+                    <i class="fas fa-save"></i> Save Overlay
+                </button>
+                <button id="exportOverlay" class="editor-btn">
+                    <i class="fas fa-download"></i> Export for OBS
+                </button>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div id="overlayCanvas" class="overlay-canvas">
+                <!-- Elements will be added here -->
+            </div>
+            <div class="canvas-overlay">
+                <div class="canvas-info">
+                    <span>1920 x 1080</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="overlay-editor.js"></script>
+</body>
+</html> 
