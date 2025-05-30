@@ -31,6 +31,11 @@
     box-sizing: border-box;
 }
 
+html {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -104,26 +109,27 @@ main {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    background-color: var(--bg-primary);
 }
 
 /* Hero Section */
 .hero {
     text-align: center;
     padding: 3rem 1rem;
-    background: linear-gradient(135deg, #18181b 0%, #9147ff 100%);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--accent-color) 100%);
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 20px var(--shadow-color);
     margin-bottom: 2rem;
 }
 
 .stream-info h1 {
     font-size: 2.5rem;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
 .stream-status {
-    color: #efeff1;
+    color: var(--text-primary);
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
 }
@@ -136,22 +142,23 @@ main {
 }
 
 .social-link {
-    color: white;
+    color: var(--text-primary);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: var(--bg-tertiary);
     transition: all 0.3s;
 }
 
 .social-link:hover {
-    background-color: rgba(255,255,255,0.2);
+    background-color: var(--accent-color);
+    color: white;
     transform: translateY(-2px);
 }
 
 /* Schedule Section */
 .schedule-section {
-    background-color: #18181b;
+    background-color: var(--bg-secondary);
     padding: 2rem;
     border-radius: 8px;
     margin-bottom: 2rem;
@@ -161,7 +168,7 @@ main {
 }
 
 .schedule-section h2 {
-    color: white;
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 1.5rem;
 }
@@ -176,19 +183,19 @@ main {
 }
 
 .schedule-day {
-    background-color: #1f1f23;
+    background-color: var(--card-bg);
     padding: 1rem;
     border-radius: 4px;
     text-align: center;
 }
 
 .schedule-day h3 {
-    color: #9147ff;
+    color: var(--accent-color);
     margin-bottom: 0.5rem;
 }
 
 .schedule-day p {
-    color: #efeff1;
+    color: var(--text-primary);
 }
 
 /* About Section */
@@ -287,8 +294,8 @@ main {
 
 /* Footer */
 footer {
-    background-color: #18181b;
-    color: #efeff1;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
     padding: 1.5rem;
     margin-top: auto;
 }
@@ -309,13 +316,13 @@ footer {
 }
 
 .footer-links a {
-    color: #efeff1;
+    color: var(--text-primary);
     text-decoration: none;
     transition: color 0.3s;
 }
 
 .footer-links a:hover {
-    color: #9147ff;
+    color: var(--accent-color);
 }
 
 /* Responsive Design */
