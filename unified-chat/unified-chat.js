@@ -185,20 +185,49 @@ class UnifiedChat {
             return;
         }
 
-        // TikTok Live API implementation
-        // Note: This is a simplified version. You'll need to implement the actual TikTok Live API integration
-        // using their official SDK or WebSocket connection
+        // Initialize TikTok WebSocket connection
         this.tiktokClient = new WebSocket('wss://webcast.tiktok.com/ws');
         
+        this.tiktokClient.onopen = () => {
+            console.log('TikTok WebSocket connected');
+            // Authenticate with TikTok
+            this.tiktokClient.send(JSON.stringify({
+                type: 'auth',
+                client_key: this.config.tiktok.clientKey,
+                client_secret: this.config.tiktok.clientSecret
+            }));
+        };
+
         this.tiktokClient.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            if (data.type === 'chat') {
-                this.addMessage('tiktok', data.user.nickname, data.content);
+            
+            switch (data.type) {
+                case 'chat':
+                    this.addMessage('tiktok', data.user.nickname, data.content);
+                    break;
+                case 'gift':
+                    this.addMessage('tiktok', 'System', `${data.user.nickname} sent a gift: ${data.gift.name}`);
+                    break;
+                case 'like':
+                    this.addMessage('tiktok', 'System', `${data.user.nickname} sent ${data.likeCount} likes`);
+                    break;
+                case 'member_join':
+                    this.addMessage('tiktok', 'System', `${data.user.nickname} joined the stream`);
+                    break;
+                case 'error':
+                    console.error('TikTok WebSocket error:', data.message);
+                    break;
             }
         };
 
         this.tiktokClient.onerror = (error) => {
             console.error('TikTok WebSocket error:', error);
+        };
+
+        this.tiktokClient.onclose = () => {
+            console.log('TikTok WebSocket disconnected');
+            // Attempt to reconnect after 5 seconds
+            setTimeout(() => this.initializeTikTokConnection(), 5000);
         };
     }
 

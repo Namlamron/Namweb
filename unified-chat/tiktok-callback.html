@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Authentication Callback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #18181b;
+            color: #efeff1;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background-color: #1f1f23;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .success {
+            color: #00ff00;
+        }
+        .error {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TikTok Authentication Status</h1>
+        <p id="status">Processing authentication...</p>
+    </div>
+
+    <script>
+        async function handleCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+            const statusElement = document.getElementById('status');
+
+            if (error) {
+                statusElement.textContent = `Error: ${error}`;
+                statusElement.className = 'error';
+                return;
+            }
+
+            if (code) {
+                try {
+                    // Send the code to your backend to exchange for an access token
+                    const response = await fetch('/api/tiktok/auth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ code })
+                    });
+
+                    if (response.ok) {
+                        statusElement.textContent = 'Authentication successful! You can close this window.';
+                        statusElement.className = 'success';
+                        // Close the window after 3 seconds
+                        setTimeout(() => window.close(), 3000);
+                    } else {
+                        throw new Error('Failed to exchange code for token');
+                    }
+                } catch (error) {
+                    statusElement.textContent = `Error: ${error.message}`;
+                    statusElement.className = 'error';
+                }
+            } else {
+                statusElement.textContent = 'No authentication code received';
+                statusElement.className = 'error';
+            }
+        }
+
+        // Handle the callback when the page loads
+        handleCallback();
+    </script>
+</body>
+</html> 
