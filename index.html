@@ -68,5 +68,38 @@
                 </div>
             </div>
         </footer>
+        <script>
+            // Auto-reload functionality
+            class AutoReloader {
+                constructor() {
+                    this.lastModified = new Date().getTime();
+                    this.checkInterval = 5000; // Check every 5 seconds
+                    this.startChecking();
+                }
+
+                startChecking() {
+                    setInterval(() => this.checkForUpdates(), this.checkInterval);
+                }
+
+                async checkForUpdates() {
+                    try {
+                        const response = await fetch(window.location.href, { method: 'HEAD' });
+                        const lastModified = new Date(response.headers.get('last-modified')).getTime();
+                        
+                        if (lastModified > this.lastModified) {
+                            console.log('Changes detected, reloading...');
+                            window.location.reload();
+                        }
+                    } catch (error) {
+                        console.error('Error checking for updates:', error);
+                    }
+                }
+            }
+
+            // Initialize auto-reloader when the page loads
+            document.addEventListener('DOMContentLoaded', () => {
+                new AutoReloader();
+            });
+        </script>
     </body>
 </html>

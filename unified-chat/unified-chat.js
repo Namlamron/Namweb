@@ -1,3 +1,30 @@
+// Auto-reload functionality
+class AutoReloader {
+    constructor() {
+        this.lastModified = new Date().getTime();
+        this.checkInterval = 5000; // Check every 5 seconds
+        this.startChecking();
+    }
+
+    startChecking() {
+        setInterval(() => this.checkForUpdates(), this.checkInterval);
+    }
+
+    async checkForUpdates() {
+        try {
+            const response = await fetch(window.location.href, { method: 'HEAD' });
+            const lastModified = new Date(response.headers.get('last-modified')).getTime();
+            
+            if (lastModified > this.lastModified) {
+                console.log('Changes detected, reloading...');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error checking for updates:', error);
+        }
+    }
+}
+
 class UnifiedChat {
     constructor() {
         this.chatMessages = document.getElementById('chatMessages');
@@ -114,7 +141,8 @@ class UnifiedChat {
     }
 }
 
-// Initialize the chat when the page loads
+// Initialize the chat and auto-reloader when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     new UnifiedChat();
+    new AutoReloader();
 }); 
