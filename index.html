@@ -16,6 +16,9 @@
                 <a href="brb-page/BRBindex.html">BRB Page</a>
                 <a href="unified-chat/unified-chat.html">Unified Chat</a>
             </nav>
+            <button class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
         </header>
         
         <main>
@@ -69,6 +72,37 @@
             </div>
         </footer>
         <script>
+            // Theme switching functionality
+            class ThemeManager {
+                constructor() {
+                    this.themeToggle = document.querySelector('.theme-toggle');
+                    this.themeIcon = this.themeToggle.querySelector('i');
+                    this.currentTheme = localStorage.getItem('theme') || 'light';
+                    
+                    this.init();
+                }
+
+                init() {
+                    // Set initial theme
+                    document.documentElement.setAttribute('data-theme', this.currentTheme);
+                    this.updateIcon();
+
+                    // Add click event listener
+                    this.themeToggle.addEventListener('click', () => this.toggleTheme());
+                }
+
+                toggleTheme() {
+                    this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-theme', this.currentTheme);
+                    localStorage.setItem('theme', this.currentTheme);
+                    this.updateIcon();
+                }
+
+                updateIcon() {
+                    this.themeIcon.className = this.currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+                }
+            }
+
             // Auto-reload functionality
             class AutoReloader {
                 constructor() {
@@ -96,9 +130,10 @@
                 }
             }
 
-            // Initialize auto-reloader when the page loads
+            // Initialize when the page loads
             document.addEventListener('DOMContentLoaded', () => {
                 new AutoReloader();
+                new ThemeManager();
             });
         </script>
     </body>

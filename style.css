@@ -1,3 +1,29 @@
+/* Theme Variables */
+:root {
+    /* Light theme (default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --bg-tertiary: #e5e5e5;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent-color: #9147ff;
+    --header-bg: #ffffff;
+    --card-bg: #f5f5f5;
+    --shadow-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0e0e10;
+    --bg-secondary: #18181b;
+    --bg-tertiary: #1f1f23;
+    --text-primary: #efeff1;
+    --text-secondary: #adadb8;
+    --accent-color: #9147ff;
+    --header-bg: #18181b;
+    --card-bg: #1f1f23;
+    --shadow-color: rgba(0,0,0,0.2);
+}
+
 /* Reset and base styles */
 * {
     margin: 0;
@@ -8,33 +34,35 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #0e0e10;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* Header and Navigation */
 header {
-    background-color: #18181b;
+    background-color: var(--header-bg);
     padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px var(--shadow-color);
     position: sticky;
     top: 0;
     z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav {
-    max-width: 1200px;
-    margin: 0 auto;
     display: flex;
     gap: 1rem;
     justify-content: center;
 }
 
 nav a {
-    color: #efeff1;
+    color: var(--text-primary);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -42,13 +70,31 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #2d2d2d;
-    color: #9147ff;
+    background-color: var(--bg-tertiary);
+    color: var(--accent-color);
 }
 
 nav a.active {
-    background-color: #9147ff;
+    background-color: var(--accent-color);
     color: white;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.theme-toggle:hover {
+    color: var(--accent-color);
 }
 
 /* Main Content */
