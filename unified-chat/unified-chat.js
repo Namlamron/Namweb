@@ -38,8 +38,54 @@ class UnifiedChat {
             tiktok: true
         };
 
+        // Platform clients
+        this.twitchClient = null;
+        this.youtubeClient = null;
+        this.tiktokClient = null;
+
+        // Configuration
+        this.config = {
+            twitch: {
+                channel: 'namlamron', // Your Twitch channel name
+                clientId: '', // Will be set from environment
+                accessToken: '' // Will be set from environment
+            },
+            youtube: {
+                channelId: '', // Will be set from environment
+                apiKey: '' // Will be set from environment
+            },
+            tiktok: {
+                username: 'namlamron', // Your TikTok username
+                clientKey: '', // Will be set from environment
+                clientSecret: '' // Will be set from environment
+            }
+        };
+
         this.initializeEventListeners();
-        this.initializePlatformConnections();
+        this.loadConfig();
+    }
+
+    async loadConfig() {
+        try {
+            // Load configuration from environment variables
+            const response = await fetch('/api/config');
+            const config = await response.json();
+            
+            // Update config with environment variables
+            this.config.twitch.clientId = config.TWITCH_CLIENT_ID;
+            this.config.twitch.accessToken = config.TWITCH_ACCESS_TOKEN;
+            this.config.youtube.channelId = config.YOUTUBE_CHANNEL_ID;
+            this.config.youtube.apiKey = config.YOUTUBE_API_KEY;
+            this.config.tiktok.clientKey = config.TIKTOK_CLIENT_KEY;
+            this.config.tiktok.clientSecret = config.TIKTOK_CLIENT_SECRET;
+
+            // Initialize platform connections
+            this.initializePlatformConnections();
+        } catch (error) {
+            console.error('Error loading configuration:', error);
+            // Fallback to test messages if config loading fails
+            this.addTestMessages();
+        }
     }
 
     initializeEventListeners() {
@@ -62,29 +108,113 @@ class UnifiedChat {
     }
 
     initializePlatformConnections() {
-        // Initialize Twitch connection
         this.initializeTwitchConnection();
-        
-        // Initialize YouTube connection
         this.initializeYouTubeConnection();
-        
-        // Initialize TikTok connection
         this.initializeTikTokConnection();
     }
 
     initializeTwitchConnection() {
-        // TODO: Implement Twitch chat connection using tmi.js
-        // This will require your Twitch OAuth token and channel name
+        if (!this.config.twitch.clientId || !this.config.twitch.accessToken) {
+            console.warn('Twitch credentials not configured');
+            return;
+        }
+
+        this.twitchClient = new tmi.Client({
+            options: { debug: true },
+            connection: {
+                secure: true,
+                reconnect: true
+            },
+            identity: {
+                username: this.config.twitch.channel,
+                password: `oauth:${this.config.twitch.accessToken}`
+            },
+            channels: [this.config.twitch.channel]
+        });
+
+        this.twitchClient.connect().catch(console.error);
+
+        this.twitchClient.on('message', (channel, tags, message, self) => {
+            if (self) return;
+            this.addMessage('twitch', tags.username, message);
+        });
     }
 
     initializeYouTubeConnection() {
-        // TODO: Implement YouTube chat connection using YouTube API
-        // This will require your YouTube API key and channel ID
+        if (!this.config.youtube.apiKey || !this.config.youtube.channelId) {
+            console.warn('YouTube credentials not configured');
+            return;
+        }
+
+        // Load the YouTube API
+        gapi.load('client', () => {
+            gapi.client.init({
+                apiKey: this.config.youtube.apiKey,
+                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
+            }).then(() => {
+                // Set up polling for live chat messages
+                this.pollYouTubeChat();
+            }).catch(console.error);
+        });
+    }
+
+    async pollYouTubeChat() {
+        try {
+            const response = await gapi.client.youtube.liveChatMessages.list({
+                liveChatId: this.config.youtube.channelId,
+                part: 'snippet'
+            });
+
+            const messages = response.result.items;
+            messages.forEach(message => {
+                const username = message.snippet.authorDisplayName;
+                const text = message.snippet.displayMessage;
+                this.addMessage('youtube', username, text);
+            });
+
+            // Poll again after the suggested polling interval
+            setTimeout(() => this.pollYouTubeChat(), response.result.pollingIntervalMillis);
+        } catch (error) {
+            console.error('Error polling YouTube chat:', error);
+        }
     }
 
     initializeTikTokConnection() {
-        // TODO: Implement TikTok chat connection using TikTok API
-        // This will require your TikTok API credentials
+        if (!this.config.tiktok.clientKey || !this.config.tiktok.clientSecret) {
+            console.warn('TikTok credentials not configured');
+            return;
+        }
+
+        // TikTok Live API implementation
+        // Note: This is a simplified version. You'll need to implement the actual TikTok Live API integration
+        // using their official SDK or WebSocket connection
+        this.tiktokClient = new WebSocket('wss://webcast.tiktok.com/ws');
+        
+        this.tiktokClient.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'chat') {
+                this.addMessage('tiktok', data.user.nickname, data.content);
+            }
+        };
+
+        this.tiktokClient.onerror = (error) => {
+            console.error('TikTok WebSocket error:', error);
+        };
+    }
+
+    addTestMessages() {
+        // Add some test messages to demonstrate the UI
+        setTimeout(() => {
+            this.addMessage('twitch', 'TestUser1', 'Hello from Twitch!');
+        }, 1000);
+
+        setTimeout(() => {
+            this.addMessage('youtube', 'TestUser2', 'Hello from YouTube!');
+        }, 2000);
+
+        setTimeout(() => {
+            this.addMessage('tiktok', 'TestUser3', 'Hello from TikTok!');
+        }, 3000);
     }
 
     addMessage(platform, username, message) {
@@ -130,9 +260,28 @@ class UnifiedChat {
         const message = this.messageInput.value.trim();
         if (!message) return;
 
-        // TODO: Implement message sending to all active platforms
-        // This will require proper authentication and API implementations
-        
+        // Send message to all active platforms
+        if (this.activePlatforms.twitch && this.twitchClient) {
+            this.twitchClient.say(this.config.twitch.channel, message)
+                .catch(error => console.error('Error sending Twitch message:', error));
+        }
+
+        if (this.activePlatforms.youtube) {
+            // YouTube chat messages can only be sent by the channel owner
+            // This would require additional authentication
+            console.log('YouTube chat messages can only be sent by the channel owner');
+        }
+
+        if (this.activePlatforms.tiktok && this.tiktokClient) {
+            // Send message to TikTok chat
+            this.tiktokClient.send(JSON.stringify({
+                type: 'chat',
+                content: message
+            }));
+        }
+
+        // Add the message to the chat UI
+        this.addMessage('twitch', 'You', message);
         this.messageInput.value = '';
     }
 
